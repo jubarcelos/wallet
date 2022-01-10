@@ -1,7 +1,22 @@
 // Esse reducer será responsável por tratar as informações da pessoa usuária
+import { SET_PERSONAL_VALUE } from '../actions';
 
-// const user = (state, action) => {
-//   return state;
-// };
+const INITIAL_STATE = {
+  user: {
+    email: '',
+  },
+};
 
-// export default user;
+const user = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+  case SET_PERSONAL_VALUE:
+    return {
+      ...state,
+      email: action.payload.user.email,
+    };
+  default:
+    return state;
+  }
+};
+
+export default user;
