@@ -2,9 +2,8 @@
 import { SET_PERSONAL_VALUE } from '../actions';
 
 const INITIAL_STATE = {
-  user: {
-    email: '',
-  },
+  email: '',
+  password: '',
 };
 
 const user = (state = INITIAL_STATE, action) => {
@@ -12,7 +11,7 @@ const user = (state = INITIAL_STATE, action) => {
   case SET_PERSONAL_VALUE:
     return {
       ...state,
-      email: action.payload.user.email,
+      email: action.payload.email,
     };
   default:
     return state;

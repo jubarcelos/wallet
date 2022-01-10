@@ -2,9 +2,6 @@
 import { SET_WALLET_SPENDING } from '../actions';
 
 const INITIAL_STATE = {
-  user: {
-    email: '',
-  },
   wallet: {
     currencies: [],
     expenses: [],
