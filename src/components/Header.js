@@ -1,11 +1,10 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 export class Header extends React.Component {
   render() {
-    const { props: email } = this;
-
+    const { props: { email, exchange, totalExpenses } } = this;
     return (
       <header>
         <div className="logo">
@@ -15,14 +14,10 @@ export class Header extends React.Component {
           { `User e-mail: ${email}` }
         </span>
         <span data-testid="total-field">
-          0
-        </span>
-        <span>
-          {/* { ' ' } { totalExpenses } */}
+          { totalExpenses }
         </span>
         <span data-testid="header-currency-field">
-          BRL
-          {/* { exchange } */}
+          { exchange }
         </span>
       </header>
     );
@@ -31,10 +26,18 @@ export class Header extends React.Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
+  exchange: state.wallet.exchange,
+  totalExpenses: state.wallet.totalExpenses,
 });
+export default connect(mapStateToProps, null)(Header);
 
-export default connect(mapStateToProps)(Header);
+Header.propTypes = {
+  email: PropTypes.string.isRequired,
+  exchange: PropTypes.string,
+  totalExpenses: PropTypes.number,
+};
 
-// Header.propTypes = {
-//   email: PropTypes.string.isRequired,
-// };
+Header.defaultProps = {
+  exchange: 'BRL',
+  totalExpenses: 0,
+};

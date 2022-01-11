@@ -94,6 +94,6 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
-  history: PropTypes.objectOf(PropTypes).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   dispatchSetValue: PropTypes.func.isRequired,
 };
