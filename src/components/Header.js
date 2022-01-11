@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 export class Header extends React.Component {
@@ -12,16 +12,17 @@ export class Header extends React.Component {
           <img src="" alt="logo" />
         </div>
         <span data-testid="email-field">
-          { `User e-mail: ${{ email }}` }
+          { `User e-mail: ${email}` }
         </span>
         <span data-testid="total-field">
           0
         </span>
         <span>
-          { ' ' }
+          {/* { ' ' } { totalExpenses } */}
         </span>
         <span data-testid="header-currency-field">
           BRL
+          {/* { exchange } */}
         </span>
       </header>
     );
@@ -34,6 +35,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(Header);
 
-Header.propTypes = {
-  email: PropTypes.string.isRequired,
-};
+// Header.propTypes = {
+//   email: PropTypes.string.isRequired,
+// };
