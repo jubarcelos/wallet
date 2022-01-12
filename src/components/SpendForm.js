@@ -1,24 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setWalletSpending, getCurrenciesData } from '../actions';
+import { getCurrenciesData } from '../actions';
 
 class SpendForm extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      value: 0,
+      id: 0,
+      payment: 0,
       cause: '',
-      method: '',
-      currency: '',
-      tag: '',
+      method: 'Dinheiro',
+      currency: 'BRL',
+      tag: 'Alimentação',
+      exchangeRates: {},
     };
   }
 
-  componentDidMount() {
-    getCurrenciesData();
-  }
+  // setExchangeRatesState = () => {
+  //   this.setState({
+  //     exchangeRates: fetchCurrencies(),
+  //   });
+  // }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
@@ -26,17 +30,20 @@ class SpendForm extends React.Component {
   }
 
   onClicked = (e) => {
-    const { id, value, cause, method, currency, tag } = this.state;
+    const { id, payment, cause, method, currency, tag } = this.state;
     e.preventDefault();
     const { dispatchSetSpend } = this.props;
     dispatchSetSpend({
-      expenses: { id, value, cause, method, currency, tag },
+      id, payment, cause, method, currency, tag,
     });
+    // dispatchSetCurrencies({
+
+    // })
   }
 
   render() {
     const {
-      state: value, cause, method, currency, tag
+      state: method, currency, tag,
     } = this;
 
     const currencies = [
@@ -55,78 +62,85 @@ class SpendForm extends React.Component {
       'ETH',
       'XRP',
     ];
+    const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
+    const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
     return (
-      <form
-        action="insertSpend"
-        method="POST"
-        onSubmit={ this.onClicked }
-      >
-        <label htmlFor="value">
-          Valor
-          <input
-            data-testid="value-input"
-            placeholder="Gasto realizado"
-            onChange={ this.handleChange }
-            value={ value }
-            name="value"
-            type="number"
-          />
-        </label>
-        <label htmlFor="cause">
-          <input
-            data-testid="description-input"
-            placeholder="Motivo"
-            onChange={ this.handleChange }
-            value={ cause }
-            name="cause"
-            type="text"
-          />
-        </label>
-
-        <select
-          data-testid="currency-input"
-          name="currency"
-          value={ currency }
+      <form>
+        <input
+          data-testid="value-input"
+          placeholder="Valor gasto"
+          name="payment"
+          type="number"
           onChange={ this.handleChange }
+          id="payment"
+        />
+        <input
+          data-testid="description-input"
+          placeholder="Motivo"
+          name="cause"
+          onChange={ this.handleChange }
+          type="text"
+          id="cause"
           required
-        >
-          <option value="BRL">BRL</option>
-          <option value="defaultSelect" disabled hidden>Selecione uma moeda</option>
-          { currencies.map((optionSelected) => (
-            <option
-              data-testid={ optionSelected }
-              key={ `currency- ${ optionSelected }` }
-              value={ optionSelected }
-            >
-              { optionSelected }
-            </option>
-          )) }
-        </select>
-
-        <select
-          data-testid="method-input"
-          name="method"
-          onChange={ this.handleChange }
-          value={ method }
-        >
-          Forma de pagamento:
-          <option value="defaultSelect" disabled hidden>Método de pagamento</option>
-          <option name="method" value="Dinheiro"> Dinheiro </option>
-          <option name="method" value="Crédito"> Cartão de crédito </option>
-          <option name="method" value="Débito"> Cartão de débito </option>
-        </select>
-        <select data-testid="tag-input">
-          Tag:
-          <option name="tag" value="Alimentação"> Alimentação </option>
-          <option name="tag" value="Lazer"> Lazer </option>
-          <option name="tag" value="Trabalho"> Trabalho </option>
-          <option name="tag" value="Transporte"> Transporte </option>
-          <option name="tag" value="Saúde"> Saúde </option>
-        </select>
+        />
+        <label htmlFor="currency">
+          <select
+            data-testid="currency-input"
+            placeholder="Moeda de pagamento"
+            name="currency"
+            value={ currency }
+            onChange={ this.handleChange }
+            required
+          >
+            { currencies.map((optionSelected) => (
+              <option
+                data-testid={ optionSelected }
+                key={ `currency- ${optionSelected}` }
+                value={ optionSelected }
+              >
+                { optionSelected }
+              </option>
+            )) }
+          </select>
+        </label>
+        <label htmlFor="method">
+          <select
+            data-testid="method-input"
+            placeholder="Forma de pagamento"
+            name="method"
+            value={ method }
+            onChange={ this.handleChange }
+          >
+            { payments.map((payMethod) => (
+              <option
+                key={ payMethod }
+                value={ payMethod }
+              >
+                { payMethod }
+              </option>
+            )) }
+          </select>
+        </label>
+        <label htmlFor="tag">
+          <select
+            data-testid="tag-input"
+            placeholder="Tag de compra"
+            value={ tag }
+          >
+            { tags.map((payTag) => (
+              <option
+                key={ payTag }
+                value={ payTag }
+              >
+                { payTag }
+              </option>
+            )) }
+          </select>
+        </label>
         <button
-          type="submit"
-          className="newSpendButton"
+          type="button"
+          onClick={ this.onClicked }
         >
           Adicionar despesa
         </button>
@@ -135,8 +149,8 @@ class SpendForm extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  dispatchSetSpend: (userData) => dispatch(setWalletSpending(userData)),
-  fetchCurrencies: () => dispatch(getCurrenciesData()),
+  // fetchCurrencies: () => dispatch(getCurrenciesData()),
+  dispatchSetSpend: (spend) => dispatch(getCurrenciesData(spend)),
 }
 );
 
@@ -144,4 +158,5 @@ export default connect(null, mapDispatchToProps)(SpendForm);
 
 SpendForm.propTypes = {
   dispatchSetSpend: PropTypes.func.isRequired,
+  // fetchCurrencies: PropTypes.func.isRequired,
 };

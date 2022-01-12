@@ -7,6 +7,8 @@ export const FAIL_REQUEST = 'FAIL_REQUEST';
 export const SUCCESS_REQUEST = 'SUCCESS_REQUEST';
 export const REQUEST = 'REQUEST';
 
+const URL = 'https://economia.awesomeapi.com.br/json/all';
+
 export const setPersonalValue = (payload) => (
   {
     type: SET_PERSONAL_VALUE, payload,
@@ -19,15 +21,11 @@ export const setWalletSpending = (payload) => (
   }
 );
 
-const request = () => ({
-  type: REQUEST,
-});
-
-const successRequest = (payload) => (
-  {
-    type: CURRENT_PRICE_VALUE, payload,
-  }
-);
+// const successRequest = (payload) => (
+//   {
+//     type: CURRENT_PRICE_VALUE, payload,
+//   }
+// );
 
 const failRequest = (err) => (
   {
@@ -35,16 +33,13 @@ const failRequest = (err) => (
   }
 );
 
-export function fetchAPI() {
-  return (
-    fetch(URL)
-      .then((response) => response.json()
-        .then((json) => (response.ok ? Promise.resolve(json) : Promise.reject(json)))));
-}
-
-export const getCurrenciesData = () => (dispatch) => {
-  dispatch(request());
-  fetchAPI()
-    .then((payload) => dispatch(successRequest(payload)))
-    .catch(() => dispatch(failRequest()));
+export const getCurrenciesData = (spend) => (dispatch) => {
+  fetch(URL)
+    .then((response) => response.json())
+    .then((currencyPrice) => {
+      dispatch(setWalletSpending({
+        ...spend, exchangeRates: currencyPrice,
+      }));
+    })
+    .catch((err) => failRequest(err));
 };

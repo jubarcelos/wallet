@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   expenses: [],
   totalExpenses: 0,
   exchange: 'BRL',
+  controlId: 0,
 };
 
 const wallet = (state = INITIAL_STATE, action) => {
@@ -13,11 +14,8 @@ const wallet = (state = INITIAL_STATE, action) => {
   case SET_WALLET_SPENDING:
     return {
       ...state,
-      expenses: [...state.expenses, {
-        id: state.expenses.length,
-        ...action.payload,
-      }],
-      totalExpenses: action.payload.totalExpenses,
+      expenses: [...state.expenses, { ...action.payload, id: state.controlId + 1 }],
+      controlId: state.controlId + 1,
     };
   default:
     return state;
