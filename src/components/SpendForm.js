@@ -71,6 +71,7 @@ class SpendForm extends React.Component {
             name="currency"
             onChange={ this.handleChange }
           >
+            {/* pedir ajuda para resolver o problema do primeiro input tbm. */}
             { currencies.currencies.map((optionSelected, index) => (
               <option
                 data-testid={ optionSelected }
