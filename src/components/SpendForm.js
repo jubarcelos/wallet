@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getCurrenciesData, getAPIData } from '../actions';
 
+const alimento = 'Alimentação';
+
 class SpendForm extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +15,7 @@ class SpendForm extends React.Component {
       cause: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: 'Alimentação',
+      tag: alimento,
     };
   }
 
@@ -27,12 +29,18 @@ class SpendForm extends React.Component {
     this.setState({ [name]: value });
   }
 
-  onClicked = (e) => {
+  onClicked = () => {
     const { id, payment, cause, method, currency, tag } = this.state;
-    e.preventDefault();
     const { dispatchSetSpend } = this.props;
     dispatchSetSpend({
       id, payment, cause, method, currency, tag,
+    });
+    this.setState({
+      payment: 0,
+      cause: '',
+      method: 'Dinheiro',
+      currency: 'USD',
+      tag: alimento,
     });
   }
 
@@ -41,7 +49,6 @@ class SpendForm extends React.Component {
       state: method, tag,
       props: currencies,
     } = this;
-
     const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
@@ -70,12 +77,13 @@ class SpendForm extends React.Component {
             placeholder="Moeda de pagamento"
             name="currency"
             onChange={ this.handleChange }
+            id="currency"
           >
-            {/* pedir ajuda para resolver o problema do primeiro input tbm. */}
-            { currencies.currencies.map((optionSelected, index) => (
+            {/* pedir ajuda para resolver o problema do testId desse input tbm. */}
+            { currencies.currencies.map((optionSelected) => (
               <option
                 data-testid={ optionSelected }
-                key={ index }
+                key={ optionSelected }
                 value={ optionSelected }
               >
                 { optionSelected }
@@ -90,6 +98,8 @@ class SpendForm extends React.Component {
             name="method"
             value={ method }
             onChange={ this.handleChange }
+            id="method"
+
           >
             { payments.map((payMethod) => (
               <option
@@ -106,6 +116,7 @@ class SpendForm extends React.Component {
             data-testid="tag-input"
             placeholder="Tag de compra"
             value={ tag }
+            id="tag"
           >
             { tags.map((payTag) => (
               <option
