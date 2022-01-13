@@ -12,9 +12,8 @@ class SpendForm extends React.Component {
       payment: 0,
       cause: '',
       method: 'Dinheiro',
-      currency: 'BRL',
+      currency: 'USD',
       tag: 'Alimentação',
-      exchangeRates: {},
     };
   }
 
@@ -43,7 +42,7 @@ class SpendForm extends React.Component {
 
   render() {
     const {
-      state: method, currency, tag,
+      state: method, tag,
     } = this;
 
     const currencies = [
@@ -89,14 +88,12 @@ class SpendForm extends React.Component {
             data-testid="currency-input"
             placeholder="Moeda de pagamento"
             name="currency"
-            value={ currency }
             onChange={ this.handleChange }
-            required
           >
-            { currencies.map((optionSelected) => (
+            { currencies.map((optionSelected, index) => (
               <option
                 data-testid={ optionSelected }
-                key={ `currency- ${optionSelected}` }
+                key={ index }
                 value={ optionSelected }
               >
                 { optionSelected }
