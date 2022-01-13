@@ -6,8 +6,8 @@ export class Header extends React.Component {
   totalExchangeSpend = () => {
     const { expenses } = this.props;
     return expenses.map((expense) => {
-      const { payment, currency, exchangeRates } = expense;
-      return Number(exchangeRates[currency].ask) * payment;
+      const { value, currency, exchangeRates } = expense;
+      return Number(exchangeRates[currency].ask) * Number(value);
     }).reduce((acc, crr) => acc + crr, 0);
   }
 
