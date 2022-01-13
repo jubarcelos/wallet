@@ -66,7 +66,7 @@ describe('3 - Crie um header para a página de carteira contendo as seguintes ca
   });
 });
 
-describe.only('4 - Desenvolva um formulário para adicionar uma despesa contendo as seguintes características:', () => {
+describe('4 - Desenvolva um formulário para adicionar uma despesa contendo as seguintes características:', () => {
   test('Um campo para adicionar o valor da despesa', async () => {
     renderWithRouterAndStore(<Wallet />, '/carteira');
     const valueInput = await screen.findByTestId(VALUE_INPUT_TEST_ID);
@@ -194,7 +194,7 @@ describe.only('4 - Desenvolva um formulário para adicionar uma despesa contendo
   });
 });
 
-describe('5 - Implemente a lógica para preencher as opções do campo "Moedas", buscando as siglas das moedas da API', () => {
+describe.only('5 - Implemente a lógica para preencher as opções do campo "Moedas", buscando as siglas das moedas da API', () => {
   test('O campo para selecionar em qual moeda será registrada a despesa tem as opções corretas', async () => {
     renderWithRouterAndStore(<Wallet />, '/carteira');
     const currencyInput = await screen.findByRole('combobox', {
