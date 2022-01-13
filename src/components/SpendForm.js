@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getCurrenciesData } from '../actions';
+import { getCurrenciesData, getAPIData } from '../actions';
 
 class SpendForm extends React.Component {
   constructor(props) {
@@ -17,11 +17,10 @@ class SpendForm extends React.Component {
     };
   }
 
-  // setExchangeRatesState = () => {
-  //   this.setState({
-  //     exchangeRates: fetchCurrencies(),
-  //   });
-  // }
+  componentDidMount() {
+    const { fetchCurrencies } = this.props;
+    fetchCurrencies();
+  }
 
   handleChange = ({ target }) => {
     const { name, value } = target;
@@ -35,32 +34,14 @@ class SpendForm extends React.Component {
     dispatchSetSpend({
       id, payment, cause, method, currency, tag,
     });
-    // dispatchSetCurrencies({
-
-    // })
   }
 
   render() {
     const {
       state: method, tag,
+      props: currencies,
     } = this;
 
-    const currencies = [
-      'USD',
-      'CAD',
-      'EUR',
-      'GBP',
-      'ARS',
-      'BTC',
-      'LTC',
-      'JPY',
-      'CHF',
-      'AUD',
-      'CNY',
-      'ILS',
-      'ETH',
-      'XRP',
-    ];
     const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
     const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
@@ -90,7 +71,7 @@ class SpendForm extends React.Component {
             name="currency"
             onChange={ this.handleChange }
           >
-            { currencies.map((optionSelected, index) => (
+            { currencies.currencies.map((optionSelected, index) => (
               <option
                 data-testid={ optionSelected }
                 key={ index }
@@ -146,14 +127,18 @@ class SpendForm extends React.Component {
   }
 }
 const mapDispatchToProps = (dispatch) => ({
-  // fetchCurrencies: () => dispatch(getCurrenciesData()),
+  fetchCurrencies: () => dispatch(getAPIData()),
   dispatchSetSpend: (spend) => dispatch(getCurrenciesData(spend)),
 }
 );
 
-export default connect(null, mapDispatchToProps)(SpendForm);
+const mapStateToProps = (state) => ({
+  currencies: state.wallet.currencies,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpendForm);
 
 SpendForm.propTypes = {
   dispatchSetSpend: PropTypes.func.isRequired,
-  // fetchCurrencies: PropTypes.func.isRequired,
+  fetchCurrencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
