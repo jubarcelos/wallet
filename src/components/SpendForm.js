@@ -11,11 +11,11 @@ class SpendForm extends React.Component {
 
     this.state = {
       id: 0,
-      payment: 0,
-      cause: '',
+      tag: 'alimento',
+      value: 0,
+      description: '',
       method: 'Dinheiro',
       currency: 'USD',
-      tag: alimento,
     };
   }
 
@@ -30,14 +30,14 @@ class SpendForm extends React.Component {
   }
 
   onClicked = () => {
-    const { id, payment, cause, method, currency, tag } = this.state;
+    const { id, value, description, method, currency, tag } = this.state;
     const { dispatchSetSpend } = this.props;
     dispatchSetSpend({
-      id, payment, cause, method, currency, tag,
+      id, value, description, method, currency, tag,
     });
     this.setState({
-      payment: 0,
-      cause: '',
+      value: 0,
+      description: '',
       method: 'Dinheiro',
       currency: 'USD',
       tag: alimento,
@@ -46,30 +46,29 @@ class SpendForm extends React.Component {
 
   render() {
     const {
-      state: method, tag,
-      props: currencies,
+      state: { method, tag, description, value },
+      props: { currencies },
     } = this;
     const payments = ['Dinheiro', 'Cartão de crédito', 'Cartão de débito'];
-    const tags = ['Alimentação', 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
+    const tags = [alimento, 'Lazer', 'Trabalho', 'Transporte', 'Saúde'];
 
     return (
       <form>
         <input
           data-testid="value-input"
           placeholder="Valor gasto"
-          name="payment"
+          name="value"
           type="number"
+          value={ value }
           onChange={ this.handleChange }
-          id="payment"
         />
         <input
           data-testid="description-input"
           placeholder="Motivo"
-          name="cause"
+          name="description"
           onChange={ this.handleChange }
+          value={ description }
           type="text"
-          id="cause"
-          required
         />
         <label htmlFor="currency">
           <select
@@ -79,8 +78,8 @@ class SpendForm extends React.Component {
             onChange={ this.handleChange }
             id="currency"
           >
-            {/* pedir ajuda para resolver o problema do testId desse input tbm. */}
-            { currencies.currencies.map((optionSelected) => (
+            {/* pedir ajuda para resolver o problema do testId desse input tbm. */ }
+            { currencies.map((optionSelected) => (
               <option
                 data-testid={ optionSelected }
                 key={ optionSelected }
@@ -115,7 +114,9 @@ class SpendForm extends React.Component {
           <select
             data-testid="tag-input"
             placeholder="Tag de compra"
+            name="tag"
             value={ tag }
+            onChange={ this.handleChange }
             id="tag"
           >
             { tags.map((payTag) => (
@@ -153,4 +154,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(SpendForm);
 SpendForm.propTypes = {
   dispatchSetSpend: PropTypes.func.isRequired,
   fetchCurrencies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  currencies: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
