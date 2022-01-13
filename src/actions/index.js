@@ -48,5 +48,6 @@ export const getAPIData = () => (dispatch) => {
   fetch(URL)
     .then((response) => response.json())
     .then((currency) => dispatch(fetchCurrencyList(Object.keys(currency)
-      .filter((coin) => coin !== 'USDT'))));
+      .filter((coin) => coin !== 'USDT'))))
+    .catch((err) => failRequest(err));
 };
