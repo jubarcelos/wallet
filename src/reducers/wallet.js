@@ -4,7 +4,6 @@ import { SET_WALLET_SPENDING } from '../actions';
 const INITIAL_STATE = {
   currencies: [],
   expenses: [],
-  totalExpenses: 0,
   exchange: 'BRL',
   controlId: 0,
 };
