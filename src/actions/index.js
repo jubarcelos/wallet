@@ -21,11 +21,11 @@ export const setWalletSpending = (payload) => (
   }
 );
 
-// const successRequest = (payload) => (
-//   {
-//     type: CURRENT_PRICE_VALUE, payload,
-//   }
-// );
+const fetchCurrencyList = (payload) => (
+  {
+    type: CURRENT_PRICE_VALUE, payload,
+  }
+);
 
 const failRequest = (err) => (
   {
@@ -42,4 +42,11 @@ export const getCurrenciesData = (spend) => (dispatch) => {
       }));
     })
     .catch((err) => failRequest(err));
+};
+
+export const getAPIData = () => (dispatch) => {
+  fetch(URL)
+    .then((response) => response.json())
+    .then((currency) => dispatch(fetchCurrencyList(Object.keys(currency)
+      .filter((coin) => coin !== 'USDT'))));
 };
