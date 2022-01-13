@@ -13,7 +13,7 @@ const wallet = (state = INITIAL_STATE, action) => {
   case SET_WALLET_SPENDING:
     return {
       ...state,
-      expenses: [...state.expenses, { ...action.payload, id: state.controlId + 1 }],
+      expenses: [...state.expenses, { ...action.payload, id: state.controlId }],
       controlId: state.controlId + 1,
     };
   case CURRENT_PRICE_VALUE:
