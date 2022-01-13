@@ -71,14 +71,15 @@ class SpendForm extends React.Component {
           type="text"
         />
         <label htmlFor="currency">
+          {/* Moedas */}
           <select
             data-testid="currency-input"
             placeholder="Moeda de pagamento"
             name="currency"
             onChange={ this.handleChange }
             id="currency"
+            aria-label="moedas"
           >
-            {/* pedir ajuda para resolver o problema do testId desse input tbm. */ }
             { currencies.map((optionSelected) => (
               <option
                 data-testid={ optionSelected }
