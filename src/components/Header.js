@@ -8,7 +8,7 @@ export class Header extends React.Component {
     return expenses.map((expense) => {
       const { value, currency, exchangeRates } = expense;
       return Number(exchangeRates[currency].ask) * Number(value);
-    }).reduce((acc, crr) => acc + crr, 0);
+    }).reduce((acc, crr) => acc + crr, 0).toFixed(2);
   }
 
   render() {
