@@ -6,6 +6,7 @@ export const CURRENT_PRICE_VALUE = 'CURRENT_PRICE_VALUE';
 export const FAIL_REQUEST = 'FAIL_REQUEST';
 export const SUCCESS_REQUEST = 'SUCCESS_REQUEST';
 export const REQUEST = 'REQUEST';
+export const EXCLUDE_EXPENSE = 'EXCLUDE_EXPENSE';
 
 const URL = 'https://economia.awesomeapi.com.br/json/all';
 
@@ -21,17 +22,22 @@ export const setWalletSpending = (payload) => (
   }
 );
 
-const fetchCurrencyList = (payload) => (
+export const fetchCurrencyList = (payload) => (
   {
     type: CURRENT_PRICE_VALUE, payload,
   }
 );
 
-const failRequest = (err) => (
+export const failRequest = (err) => (
   {
     type: FAIL_REQUEST, err,
   }
 );
+
+export const excludeExpense = (id) => ({
+  type: EXCLUDE_EXPENSE,
+  id,
+});
 
 export const getCurrenciesData = (spend) => (dispatch) => {
   fetch(URL)
