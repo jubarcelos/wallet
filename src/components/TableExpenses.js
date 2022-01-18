@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { FaTrashAlt } from 'react-icons/fa';
+import { excludeExpense } from '../actions';
 
 // Referencia: https://www.delftstack.com/pt/howto/javascript/create-table-javascript/#:~:text=Para%20criar%20um%20elemento%20HTML,createElement('table')%20.
 
 class TableExpenses extends Component {
-  // const buttonExcluir = <button type="buttonExcluir" id="buttonExcluir" data-testid="delete-btn">
-  //   ![image](btnExcluir.gif)
-  // </button>;
-
   render() {
-    const { expenses } = this.props;
+    const { expenses, deleteExpense } = this.props;
     return (
       <div className="expenses-table">
         <table>
@@ -30,28 +28,41 @@ class TableExpenses extends Component {
           </thead>
           <tbody>
             {
-              expenses && (expenses.map((expense) => (
+              expenses && (expenses.map(({
+                id, description, tag, method, exchangeRates, currency, value,
+              }) => (
                 (
-                  <tr key={ expense.id }>
+                  <tr key={ id }>
                     <th>#</th>
-                    <td>{ expense.description }</td>
-                    <td>{ expense.tag }</td>
-                    <td>{ expense.method }</td>
-                    <td>{ expense.value }</td>
-                    <td>{ expense.exchangeRates[expense.currency].name }</td>
+                    <td>{ description }</td>
+                    <td>{ tag }</td>
+                    <td>{ method }</td>
+                    <td>{ value }</td>
+                    <td>{ exchangeRates[currency].name }</td>
                     <td>
                       {
-                        Number(expense.exchangeRates[expense.currency].ask)
+                        Number(exchangeRates[currency].ask)
                           .toFixed(2)
                       }
                     </td>
                     <td>
                       {
-                        (Number(expense.exchangeRates[expense.currency].ask)
-                          * Number(expense.value)).toFixed(2)
+                        (Number(exchangeRates[currency].ask)
+                          * Number(value)).toFixed(2)
                       }
                     </td>
                     <td>Real</td>
+                    <td>
+                      <button
+                        id={ id }
+                        data-testid="delete-btn"
+                        type="button"
+                        aria-label="Delete"
+                        onClick={ () => deleteExpense(id) }
+                      >
+                        <FaTrashAlt />
+                      </button>
+                    </td>
                   </tr>
                 )
               )))
@@ -66,8 +77,13 @@ const mapStateToProps = (state) => ({
   expenses: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(TableExpenses);
+const mapDispatchToProps = (dispatch) => ({
+  deleteExpense: (id) => dispatch(excludeExpense(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableExpenses);
 
 TableExpenses.propTypes = {
   expenses: PropTypes.arrayOf(PropTypes.object).isRequired,
+  deleteExpense: PropTypes.func.isRequired,
 };
